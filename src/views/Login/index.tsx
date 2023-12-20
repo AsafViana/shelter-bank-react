@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Copyright } from "@mui/icons-material";
+import {color} from '../../../env.json'
 
 export default function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -24,8 +25,7 @@ export default function SignIn() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container component="main" maxWidth="xs" sx={{backgroundColor: color.preto, flex: 1, height: '100%'}}>
       <Box
         sx={{
           marginTop: 8,
