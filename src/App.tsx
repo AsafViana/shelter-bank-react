@@ -1,28 +1,12 @@
-import { CssBaseline } from "@mui/material";
 import Login from "./views/Login";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-function App() {
-	const rootElement = document.getElementById('root')
+function App() {  // TODO remove, this demo shouldn't need to reset the theme.
+  const defaultTheme = createTheme()
 
-  const theme = createTheme({
-		components: {
-			MuiPopover: {
-				defaultProps: {
-					container: rootElement,
-				},
-			},
-			MuiPopper: {
-				defaultProps: {
-					container: rootElement,
-				},
-			},
-		},
-  })
 
   return (
-		<ThemeProvider theme={theme}>
-			<CssBaseline />
+		<ThemeProvider theme={defaultTheme}>
 			<Login />
 		</ThemeProvider>
   )
