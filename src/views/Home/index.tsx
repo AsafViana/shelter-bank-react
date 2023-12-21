@@ -1,22 +1,15 @@
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import SvgIcon from '@mui/material/SvgIcon'
-import { Grid_amarelo } from '../../components/GridCustomizado'
+import { CssBaseline, Box, Grid, Typography, Button, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
-import {color, ministerio} from '../../../env.json'
+import { color, ministerio } from '../../../env.json'
 import { signOut, db, collection, getDocs, auth } from '../../service/firebase'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../assets/ShelterBank.svg'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
-import IconButton from '@mui/material/IconButton'
-
+import QrCodeIcon from '@mui/icons-material/QrCode'
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
+import '@fontsource/inter/200.css'
+import '@fontsource/inter/900.css'
+import '@fontsource/inter/400.css'
 
 export default function index() {
 	const navigate = useNavigate()
@@ -58,7 +51,6 @@ export default function index() {
 	const pegaDados = async () => {
 		try {
 			const querySnapshot = await getDocs(collection(db, ministerio))
-			const dados: any[] = []
 			querySnapshot.forEach((doc) => {
 				if (doc.data().uid === auth.currentUser?.uid) {
 					setNome(doc.data().nome)
@@ -77,7 +69,7 @@ export default function index() {
 		signOut(auth)
 		localStorage.removeItem('email')
 		localStorage.removeItem('senha')
-		navigate('Login')
+		navigate('/')
 	}
 
 	useEffect(() => {
@@ -88,15 +80,72 @@ export default function index() {
 		fetchData()
 	}, [Dados])
 
+	useEffect(() => {
+		const email = localStorage.getItem('email')
+		const senha = localStorage.getItem('senha')
+		if (!email && !senha){
+			navigate('/')
+		}
+	}, [])
+
 	if (!Carregou) return
 
 	return (
-			<Grid  component="main" sx={{ height: '100vh', backgroundColor: color.principal, paddingX: 4, paddingTop: 5 }}>
-				<CssBaseline />
-				<Grid container component='div' sx={{  height: 'auto' }}>
-					<img src={Logo} alt="Logo Shelter Bank" style={{width: 100}} />
-						<MeetingRoomIcon sx={{width: 200, fontSize: 50, color: color.vermelho, alignSelf: 'center', justifySelf: 'end'}}/>
+		<Box component="main" sx={{ height: '100vh', backgroundColor: color.principal, paddingX: 4, paddingTop: 5 }}>
+			<CssBaseline />
+			<Box display="flex" flexDirection="column" gap={4} width="100%">
+				<Grid container component="div" sx={{ height: 'auto', justifyContent: 'space-between' }}>
+					<img src={Logo} alt="Logo Shelter Bank" style={{ width: 70, alignSelf: 'center' }} />
+					<MeetingRoomIcon onClick={logout} sx={{ fontSize: 60, color: color.preto, alignSelf: 'center', justifySelf: 'end' }} />
 				</Grid>
-			</Grid>
+				<Box bgcolor={color.preto} borderRadius="1rem" boxShadow={5} padding={3} height="auto">
+					<Box component={'div'} flexDirection={'column'} display="flex" justifyContent="space-between" alignItems="flex-start" gap={4}>
+						<Box>
+							<Typography fontWeight={900} fontFamily="Inter" color={color.branco}>
+								Nome:
+							</Typography>
+							<Typography fontWeight={200} fontFamily="Inter" color={color.branco} fontSize={23}>
+								{Nome}
+							</Typography>
+						</Box>
+						<Box>
+							<Typography fontWeight={900} fontFamily="Inter" color={color.branco}>
+								Código:
+							</Typography>
+							<Typography fontWeight={200} fontFamily="Inter" color={color.branco} fontSize={23}>
+								{formatarStringComQuebraDeLinha(Codigo!, 23)}
+							</Typography>
+						</Box>
+					</Box>
+				</Box>
+				<Box bgcolor={color.preto} borderRadius="1rem" boxShadow={5} padding={3} height="auto">
+					<Box component={'div'} flexDirection={'column'} display="flex" justifyContent="space-between" alignItems="flex-start" gap={4}>
+						<Box>
+							<Typography fontWeight={900} fontFamily="Inter" color={color.branco}>
+								Saldo disponivel:
+							</Typography>
+							<Box display={'flex'} component={'div'} flexDirection={'row'} alignItems={'baseline'} gap={1}>
+								<Typography color={color.branco}>SC$</Typography>
+								<Typography fontWeight={900} fontFamily="Inter" color={color.verde} fontSize={30}>
+									{Saldo}
+								</Typography>
+							</Box>
+						</Box>
+					</Box>
+				</Box>
+				<Typography fontWeight={900} fontSize={20} fontFamily="Inter" color={color.preto}>
+					Movimentos:
+				</Typography>
+
+				<Box display={'flex'} justifyContent={'space-around'}>
+					<Box bgcolor={color.preto} borderRadius="1rem" boxShadow={5} padding={3} height="auto">
+						<QrCodeIcon sx={{ fontSize: 60, color: color.principal }} />
+					</Box>
+					<Box onClick={() => navigate('transferencia')} bgcolor={color.preto} borderRadius="1rem" boxShadow={5} padding={3} height="auto">
+						<CompareArrowsIcon sx={{ fontSize: 60, color: color.principal }} />
+					</Box>
+				</Box>
+			</Box>
+		</Box>
 	)
 }
