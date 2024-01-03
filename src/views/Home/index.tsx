@@ -83,7 +83,7 @@ export default function index() {
 	useEffect(() => {
 		const email = localStorage.getItem('email')
 		const senha = localStorage.getItem('senha')
-		if (!email && !senha){
+		if (!email && !senha) {
 			navigate('/')
 		}
 	}, [])
@@ -93,11 +93,11 @@ export default function index() {
 	return (
 		<Box component="main" sx={{ height: '100vh', backgroundColor: color.principal, paddingX: 4, paddingTop: 5 }}>
 			<CssBaseline />
+			<Grid container component="div" sx={{ height: 'auto', justifyContent: 'space-between' }}>
+				<img src={Logo} alt="Logo Shelter Bank" style={{ width: 70, alignSelf: 'center' }} />
+				<MeetingRoomIcon onClick={logout} sx={{ fontSize: 60, color: color.preto, alignSelf: 'center', justifySelf: 'end' }} />
+			</Grid>
 			<Box display="flex" flexDirection="column" gap={4} width="100%">
-				<Grid container component="div" sx={{ height: 'auto', justifyContent: 'space-between' }}>
-					<img src={Logo} alt="Logo Shelter Bank" style={{ width: 70, alignSelf: 'center' }} />
-					<MeetingRoomIcon onClick={logout} sx={{ fontSize: 60, color: color.preto, alignSelf: 'center', justifySelf: 'end' }} />
-				</Grid>
 				<Box bgcolor={color.preto} borderRadius="1rem" boxShadow={5} padding={3} height="auto">
 					<Box component={'div'} flexDirection={'column'} display="flex" justifyContent="space-between" alignItems="flex-start" gap={4}>
 						<Box>
